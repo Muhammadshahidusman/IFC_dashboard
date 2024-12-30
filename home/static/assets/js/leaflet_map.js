@@ -15,38 +15,41 @@ var googleStreetsLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={
     attribution: '© Google Maps'
 });
 
-var esriTopoLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Topo/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles © Esri'
-});
+// GeoServer WFS URL (Modify accordingly)
+var wfsUrl = 'http://34.209.210.215:8080/geoserver/IFC/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=IFC:home_karachi_buildings&outputFormat=application/json';
 
-var stamenTonerLayer = L.tileLayer('https://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
-    attribution: 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
-});
+// Fetch GeoJSON from GeoServer WFS
+fetch(wfsUrl)
+    .then(response => response.json())
+    .then(data => {
+        var geojsonLayer = L.geoJSON(data, {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 6,
+                    fillColor: "#ff7800",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("<b>ID:</b> " + feature.id + "<br><b>Name:</b> " + (feature.properties.name || "N/A"));
+            }
+        });
+        geojsonLayer.addTo(map);
+    })
+    .catch(error => console.log("Error loading WFS data: ", error));
 
-// Add the GeoServer WMS layer
-var geoServerLayer = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/survey/wms', {
-    layers: 'survey:home_ifc_karachi', // Replace with your GeoServer workspace and layer name
-    format: 'image/png',
-    transparent: true,
-    attribution: "GeoServer"
-});
-
-// Layer control to toggle base and overlay layers
+// Layer control to toggle base layers
 var baseLayers = {
     "OpenStreetMap": osmLayer,
     "Google Satellite": googleSatLayer,
-    "Google Streets": googleStreetsLayer,
-    // "Esri Topographic": esriTopoLayer,
-    // "Stamen Toner": stamenTonerLayer
+    "Google Streets": googleStreetsLayer
 };
 
-var overlayLayers = {
-    "Building Points": geoServerLayer
-};
-
-// Add the default base layer
+// Add default base layer
 googleStreetsLayer.addTo(map);
-geoServerLayer.addTo(map);
 
 // Add layer control
-L.control.layers(baseLayers, overlayLayers).addTo(map);
+L.control.layers(baseLayers).addTo(map);

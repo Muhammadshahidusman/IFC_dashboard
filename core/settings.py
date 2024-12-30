@@ -93,7 +93,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'IFC1',
+        'NAME': 'IFC',
         'USER': 'postgres',
         'PASSWORD': '0346',
         'HOST': '34.209.210.215',
