@@ -31,6 +31,13 @@ var geoServerLayer = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/IFC/w
     attribution: "GeoServer"
 });
 
+var geoServerLayer1 = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/IFC/wms', {
+    layers: 'IFC:home_buildingsurvey', // Replace with your GeoServer workspace and layer name
+    format: 'image/png',
+    transparent: true,
+    attribution: "GeoServer"
+});
+
 // Layer control to toggle base and overlay layers
 var baseLayers = {
     "OpenStreetMap": osmLayer,
@@ -41,7 +48,8 @@ var baseLayers = {
 };
 
 var overlayLayers = {
-    "Building Points": geoServerLayer
+    "Building Points": geoServerLayer,
+    "Completed Forms": geoServerLayer1
 };
 
 // Add the default base layer
