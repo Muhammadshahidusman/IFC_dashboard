@@ -24,15 +24,15 @@ var stamenTonerLayer = L.tileLayer('https://{s}.tile.stamen.com/toner/{z}/{x}/{y
 });
 
 // Add the GeoServer WMS layer
-var geoServerLayer = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/IFC/wms', {
-    layers: 'IFC:home_surveyprogress', // Replace with your GeoServer workspace and layer name
+var geoServerLayer = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/IFC_Dashboard/wms', {
+    layers: 'IFC_Dashboard:home_surveyprogress', // Replace with your GeoServer workspace and layer name
     format: 'image/png',
     transparent: true,
     attribution: "GeoServer"
 });
 
-var geoServerLayer1 = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/IFC/wms', {
-    layers: 'IFC:home_buildingsurvey', // Replace with your GeoServer workspace and layer name
+var geoServerLayer1 = L.tileLayer.wms('http://34.209.210.215:8080/geoserver/IFC_Dashboard/wms', {
+    layers: 'IFC_Dashboard:home_buildingsurvey', // Replace with your GeoServer workspace and layer name
     format: 'image/png',
     transparent: true,
     attribution: "GeoServer"
